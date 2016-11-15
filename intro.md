@@ -37,3 +37,21 @@ creators of angular invented.
 Angular 2 tooks a lot from React. Angular 2 is a direct proof of the fact that the 
 first angular came out not very good. Right now it's seemed not widespread as ReactJS,
 and don't have large community and can be a bit raw.
+
+### Why use create-react-app or convention-over-configuration
+from [here](https://blog.heroku.com/deploying-react-with-zero-configuration)
+```
+New, Zero-configuration Experience
+Inspired by the cohesive developer experience provided by Ember.js and Elm, 
+the folks at Facebook wanted to provide an easy, opinionated way forward. 
+They created a new way to develop React apps, create-react-app. 
+In the three weeks since initial public release, it has received tremendous 
+community awareness (over 8,000 GitHub stargazers) and support (dozens of pull requests).
+
+create-react-app is different than many past attempts with boilerplates and starter kits.
+ It targets zero configuration [convention-over-configuration], focusing the developer on 
+ what is interesting and different about their application.
+A powerful side-effect of zero configuration is that the tools can now evolve in the background. 
+Zero configuration lays the foundation for the tools ecosystem to create automation and delight 
+developers far beyond React itself.
+```
