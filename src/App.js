@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 import './App.css';
 import Counter from './components/Counter.js'
 import ListOfTenThings from './components/Repeat.js'
+
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import WeatherApp from './components/WeatherApp.js'
+import mainReducer from './reducers';
+
+var store = createStore(mainReducer);
 
 class App extends Component {
   render() {
@@ -17,7 +23,9 @@ class App extends Component {
         </p>
         <Counter />
         <ListOfTenThings />
-        <WeatherApp />
+        <Provider store={store}>
+          <WeatherApp />
+        </Provider>
       </div>
     );
   }

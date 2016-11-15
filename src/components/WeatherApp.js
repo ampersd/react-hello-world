@@ -3,36 +3,31 @@ import './WeatherApp.css';
 import xhr from 'xhr';
 import Plot from './Plot.js';
 
+import { connect } from 'react-redux';
+import {
+  changeLocation,
+  setSelectedTemp,
+  setSelectedDate,
+  setData,
+  setDates,
+  setTemps
+} from '../actions';
+
 
 // App.js
 class WeatherApp extends React.Component {
-    // when saving anything to our local state, we have to predefine it
-    state = {
-        location: '',
-        data: {},
-        dates: [],
-        temps: [],
-        selected: {
-            date: '',
-            temp: null
-        }
-    };
 
     onPlotClick = (data) => {
         if (data.points) {
-            this.setState({
-                selected: {
-                date: data.points[0].x,
-                temp: data.points[0].y
-                }
-            });
+            this.props.dispatch(setSelectedDate(data.points[0].x));
+            this.props.dispatch(setSelectedTemp(data.points[0].y));
         }
     };
 
     fetchData = (evt) => {
         evt.preventDefault();
-        console.log('fetch data for', this.state.location);
-        var location = encodeURIComponent(this.state.location);
+        // redux - `this.state` changes to `this.props`
+        var location = encodeURIComponent(this.props.location);
 
         var urlPrefix = 'http://api.openweathermap.org/data/2.5/forecast?q=';
         var urlSuffix = '&APPID=4993311051f75a9e6b655d22e4390bd1&units=metric';
@@ -52,28 +47,23 @@ class WeatherApp extends React.Component {
                 temps.push(list[i].main.temp);
             }
 
-            self.setState({
-                data: body,
-                dates: dates,
-                temps: temps,
-                selected: {
-                    date: '',
-                    temp: null
-                }
-            })
+            self.props.dispatch(setData(body));
+            self.props.dispatch(setDates(dates));
+            self.props.dispatch(setTemps(temps));
+            self.props.dispatch(setSelectedTemp(null));
+            self.props.dispatch(setSelectedDate(''));
         });
     };
 
     changeLocation = (evt) => {
-        this.setState({
-            location: evt.target.value
-        });
+        // use redux way - dispatch the action
+        this.props.dispatch(changeLocation(evt.target.value));
     };
 
     render() {
         var currentTemp = 'not loaded yet';
-        if (this.state.data.list) {
-            currentTemp = this.state.data.list[0].main.temp;
+        if (this.props.data.list) {
+            currentTemp = this.props.data.list[0].main.temp;
         }
 
         return (
@@ -84,23 +74,24 @@ class WeatherApp extends React.Component {
                     <input 
                         placeholder={"City, Country"}
                         type="text"
-                        value={this.state.location}
+                        value={this.props.location}
                         onChange={this.changeLocation} 
                     />
                 </label>
             </form>
-            {(this.state.data.list) ? (
+            {(this.props.data.list) ? (
             <div className="wrapper">
                 <p className="temp-wrapper">
-                    <span className="temp">{ this.state.selected.temp ? this.state.selected.temp : currentTemp }</span>
+                    <span className="temp">{ this.props.selected.temp ? this.props.selected.temp : currentTemp }</span>
                     <span className="temp-symbol">°C</span>
                     <span className="temp-date">
-                        { this.state.selected.temp ? this.state.selected.date : ''}
+                        { this.props.selected.temp ? this.props.selected.date : ''}
                     </span>
                 </p>
+                <p>The temperature on { this.props.selected.date } will be { this.props.selected.temp }°C</p>
                 <Plot 
-                    xData={this.state.dates}
-                    yData={this.state.temps}
+                    xData={this.props.dates}
+                    yData={this.props.temps}
                     onPlotClick={this.onPlotClick}
                     type="scatter"
                 />
@@ -111,4 +102,14 @@ class WeatherApp extends React.Component {
     }
 }
 
-export default WeatherApp;
+function mapStateToProps (state){
+    return {
+        location: state.location,
+        data: state.data,
+        dates: state.dates,
+        temps: state.temps,
+        selected: state.selected
+    };
+}
+
+export default connect(mapStateToProps)(WeatherApp);
