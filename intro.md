@@ -15,7 +15,8 @@ So we don't use *.jsx - there is no need in including babel transpiler.
 One of Key Concepts of React - Virtual Dom. 
 We can have multiple event listeners in our react components. 
 But, in fact, we will have only one real event listener at root element of react.
-(Should never make <body> a root element. Better use some <div> inside)
+(Should never make <body> a root element. Better use some <div> inside
+see [](https://medium.com/@dan_abramov/two-weird-tricks-that-fix-react-7cf9bbdef375#.bmb0i9mca) for more info)
 
 ### Simple react boilerplate
 get from here [](https://facebook.github.io/react/docs/installation.html)
