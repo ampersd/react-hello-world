@@ -1,6 +1,5 @@
 import React from 'react';
 import './WeatherApp.css';
-import xhr from 'xhr';
 import Plot from './Plot.js';
 
 import { connect } from 'react-redux';
@@ -8,9 +7,7 @@ import {
   changeLocation,
   setSelectedTemp,
   setSelectedDate,
-  setData,
-  setDates,
-  setTemps
+  fetchData
 } from '../actions';
 
 
@@ -32,27 +29,8 @@ class WeatherApp extends React.Component {
         var urlPrefix = 'http://api.openweathermap.org/data/2.5/forecast?q=';
         var urlSuffix = '&APPID=4993311051f75a9e6b655d22e4390bd1&units=metric';
         var url = urlPrefix + location + urlSuffix;
-        
-        var self = this;
 
-        xhr({
-            url: url
-        }, function (err, data) {
-            var body = JSON.parse(data.body);
-            var list = body.list;
-            var dates = [];
-            var temps = [];
-            for (var i = 0; i < list.length; i++) {
-                dates.push(list[i].dt);
-                temps.push(list[i].main.temp);
-            }
-
-            self.props.dispatch(setData(body));
-            self.props.dispatch(setDates(dates));
-            self.props.dispatch(setTemps(temps));
-            self.props.dispatch(setSelectedTemp(null));
-            self.props.dispatch(setSelectedDate(''));
-        });
+        this.props.dispatch(fetchData(url));
     };
 
     changeLocation = (evt) => {

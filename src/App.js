@@ -4,12 +4,16 @@ import './App.css';
 import Counter from './components/Counter.js'
 import ListOfTenThings from './components/Repeat.js'
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import WeatherApp from './components/WeatherApp.js'
 import mainReducer from './reducers';
 
-var store = createStore(mainReducer);
+var store = createStore(
+  mainReducer,
+  applyMiddleware(thunkMiddleware)
+);
 
 class App extends Component {
   render() {
