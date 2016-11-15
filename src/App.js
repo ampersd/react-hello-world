@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Counter from './components/Counter.js'
 import ListOfTenThings from './components/Repeat.js'
+import WeatherApp from './components/WeatherApp.js'
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
         </p>
         <Counter />
         <ListOfTenThings />
+        <WeatherApp />
       </div>
     );
   }
